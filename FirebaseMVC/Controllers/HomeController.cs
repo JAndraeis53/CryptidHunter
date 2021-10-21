@@ -20,7 +20,7 @@ namespace CryptidHunter.Controllers
         public IActionResult Index()
         {
             var userProfileId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var userProfile = _userProfileRepository.GetById(userProfileId);
+            var userProfile = _userProfileRepository.GetUserById(userProfileId);
             return View(userProfile);
         }
 
