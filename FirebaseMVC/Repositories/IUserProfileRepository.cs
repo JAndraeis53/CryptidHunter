@@ -1,4 +1,6 @@
 ﻿using CryptidHunter.Models;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace CryptidHunter.Repositories
 {
@@ -6,6 +8,7 @@ namespace CryptidHunter.Repositories
     {
         void Add(UserProfile userProfile);
         UserProfile GetByFirebaseUserId(string firebaseUserId);
-        UserProfile GetById(int id);
+        UserProfile GetUserById(int id);
+        List<UserProfile> GetAllUsers();
     }
 }

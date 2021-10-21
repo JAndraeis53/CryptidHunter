@@ -26,7 +26,43 @@ namespace CryptidHunter.Repositories
             }
         }
 
-        public UserProfile GetById(int id)
+        public List<UserProfile> GetAllUsers()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id, up.UserName, up.FirstName, up.LastName, up.email
+                        FROM  UserProfile up
+                        ORDER BY UserName ASC";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<UserProfile> users = new List<UserProfile>();
+
+                    while (reader.Read())
+                    {
+                        UserProfile user = new UserProfile
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            UserName = reader.GetString(reader.GetOrdinal("UserName")),
+                            Email = reader.GetString(reader.GetOrdinal("email")),
+
+                        };
+
+                        users.Add(user);
+                    }
+
+                    reader.Close();
+                    return users;
+                }
+            }
+        }
+        public UserProfile GetUserById(int id)
         {
             using (SqlConnection conn = Connection)
             {
@@ -34,7 +70,7 @@ namespace CryptidHunter.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Id, Email, FirebaseUserId
+                                    SELECT Id, Email, FirstName, LastName, UserName
                                     FROM UserProfile
                                     WHERE Id = @Id";
 
@@ -49,7 +85,10 @@ namespace CryptidHunter.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Email = reader.GetString(reader.GetOrdinal("Email")),
-                            FirebaseUserId = reader.GetString(reader.GetOrdinal("FirebaseUserId")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            UserName = reader.GetString(reader.GetOrdinal("UserName")),
+
                         };
                     }
                     reader.Close();
