@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CryptidHunter.Repositories;
 using CryptidHunter.Models;
+using System.Security.Claims;
 
 namespace CryptidHunter.Controllers
 {
@@ -50,16 +51,22 @@ namespace CryptidHunter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Post post)
         {
+            post.UserProfileId = GetCurrentUserProfileId();
             try
             {
                 _postRepo.AddPost(post);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 return View(post);
             }
+        }
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
 
         // GET: PostController/Edit/5

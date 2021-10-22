@@ -47,8 +47,8 @@ namespace CryptidHunter.Repositories
                         Post post = new Post
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            title = reader.GetString(reader.GetOrdinal("title")),
-                            body = reader.GetString(reader.GetOrdinal("body")),
+                            Title = reader.GetString(reader.GetOrdinal("title")),
+                            Body = reader.GetString(reader.GetOrdinal("body")),
                             UserProfile = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("UserProfileId"))
@@ -86,8 +86,8 @@ namespace CryptidHunter.Repositories
                         post = new Post
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            title = reader.GetString(reader.GetOrdinal("title")),
-                            body = reader.GetString(reader.GetOrdinal("body")),
+                            Title = reader.GetString(reader.GetOrdinal("title")),
+                            Body = reader.GetString(reader.GetOrdinal("body")),
                         };
                     }
                     reader.Close();
@@ -105,12 +105,13 @@ namespace CryptidHunter.Repositories
                 {
                     cmd.CommandText = @"
                                         INSERT INTO
-                                        Post (title, body, UserProfileId) 
+                                        Post (Title, Body, UserProfileId) 
                                         OUTPUT INSERTED.ID
-                                        VALUES(@title, @body, @UserProfileId)";
+                                        VALUES(@title, @body, @UserProfileId);
+                                        ";
 
-                    cmd.Parameters.AddWithValue("@title", post.title);
-                    cmd.Parameters.AddWithValue("@body", post.body);
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@body", post.Body);
                     cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
 
                     post.Id = (int)cmd.ExecuteScalar();
@@ -133,8 +134,8 @@ namespace CryptidHunter.Repositories
                                 UserProfileId = @UserProfileId
                             WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@id", post.Id);
-                    cmd.Parameters.AddWithValue("@title", post.title);
-                    cmd.Parameters.AddWithValue("@body", post.body);
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@body", post.Body);
                     cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
                     cmd.ExecuteNonQuery();
                 }

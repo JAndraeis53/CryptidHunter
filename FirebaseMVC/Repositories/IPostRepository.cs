@@ -9,5 +9,7 @@ namespace CryptidHunter.Repositories
         List<Post> GetAllPost();
         Post GetPostById(int id);
         void AddPost(Post post);
+        void UpdatePost(Post post);
+        void DeletePost(int id);
     }
 }
