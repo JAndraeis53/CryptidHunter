@@ -6,22 +6,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using CryptidHunter.Repositories;
 using CryptidHunter.Models;
+using System.Security.Claims;
 
 namespace CryptidHunter.Controllers
 {
     public class PostController : Controller
     {
         private readonly IPostRepository _postRepo;
+        private readonly IUserProfileRepository _userProfileRepo;
 
-        public PostController(IPostRepository postRepository)
+        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
         {
             _postRepo = postRepository;
+            _userProfileRepo = userProfileRepository;
         }
 
         // GET: PostController
         public ActionResult Index()
         {
-            List<Post> post = _postRepo.GetAllPost();
+            var post = _postRepo.GetAllPost();
 
             return View(post);
         }
@@ -46,16 +49,24 @@ namespace CryptidHunter.Controllers
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Post post)
         {
+            post.UserProfileId = GetCurrentUserProfileId();
             try
             {
-                return RedirectToAction(nameof(Index));
+                _postRepo.AddPost(post);
+
+                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(post);
             }
+        }
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
 
         // GET: PostController/Edit/5

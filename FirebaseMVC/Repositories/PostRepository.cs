@@ -33,9 +33,9 @@ namespace CryptidHunter.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT p.Id, p.title, p.body, up.UserProfileId
+                        SELECT p.Id, p.title, p.body, p.UserProfileId
                         FROM  Post p
-                            LEFT JOIN UserProfile up ON p.UserProfile = up.Id
+                            LEFT JOIN UserProfile up ON p.UserProfileId = up.Id
                         ORDER BY UserName ASC";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -47,8 +47,8 @@ namespace CryptidHunter.Repositories
                         Post post = new Post
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            title = reader.GetString(reader.GetOrdinal("title")),
-                            body = reader.GetString(reader.GetOrdinal("body")),
+                            Title = reader.GetString(reader.GetOrdinal("title")),
+                            Body = reader.GetString(reader.GetOrdinal("body")),
                             UserProfile = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("UserProfileId"))
@@ -86,8 +86,8 @@ namespace CryptidHunter.Repositories
                         post = new Post
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            title = reader.GetString(reader.GetOrdinal("title")),
-                            body = reader.GetString(reader.GetOrdinal("body")),
+                            Title = reader.GetString(reader.GetOrdinal("title")),
+                            Body = reader.GetString(reader.GetOrdinal("body")),
                         };
                     }
                     reader.Close();
@@ -96,7 +96,7 @@ namespace CryptidHunter.Repositories
                 }
             }
         }
-        public void Add(Post post)
+        public void AddPost(Post post)
         {
             using (SqlConnection conn = Connection)
             {
@@ -105,15 +105,55 @@ namespace CryptidHunter.Repositories
                 {
                     cmd.CommandText = @"
                                         INSERT INTO
-                                        Post (title, body, UserProfileId) 
+                                        Post (Title, Body, UserProfileId) 
                                         OUTPUT INSERTED.ID
-                                        VALUES(@title, @body, @UserProfileId)";
+                                        VALUES(@title, @body, @UserProfileId);
+                                        ";
 
-                    cmd.Parameters.AddWithValue("@title", post.title);
-                    cmd.Parameters.AddWithValue("@body", post.body);
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@body", post.Body);
                     cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
 
                     post.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void UpdatePost(Post post)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Post
+                            SET
+                                Title = @title,
+                                Body = @body,
+                                UserProfileId = @UserProfileId
+                            WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", post.Id);
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@body", post.Body);
+                    cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void DeletePost(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Post
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
