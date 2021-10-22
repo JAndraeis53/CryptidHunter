@@ -12,16 +12,18 @@ namespace CryptidHunter.Controllers
     public class PostController : Controller
     {
         private readonly IPostRepository _postRepo;
+        private readonly IUserProfileRepository _userProfileRepo;
 
-        public PostController(IPostRepository postRepository)
+        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
         {
             _postRepo = postRepository;
+            _userProfileRepo = userProfileRepository;
         }
 
         // GET: PostController
         public ActionResult Index()
         {
-            List<Post> post = _postRepo.GetAllPost();
+            var post = _postRepo.GetAllPost();
 
             return View(post);
         }
@@ -46,15 +48,17 @@ namespace CryptidHunter.Controllers
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Post post)
         {
             try
             {
+                _postRepo.AddPost(post);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(post);
             }
         }
 

@@ -8,6 +8,6 @@ namespace CryptidHunter.Repositories
     {
         List<Post> GetAllPost();
         Post GetPostById(int id);
-        void Add(Post post);
+        void AddPost(Post post);
     }
 }
