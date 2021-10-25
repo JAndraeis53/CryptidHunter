@@ -72,7 +72,7 @@ namespace CryptidHunter.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Id, title, body
+                                    SELECT Id, title, body, UserProfileId
                                     FROM Post
                                     WHERE Id = @Id";
 
@@ -88,6 +88,7 @@ namespace CryptidHunter.Repositories
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Title = reader.GetString(reader.GetOrdinal("title")),
                             Body = reader.GetString(reader.GetOrdinal("body")),
+                            UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                         };
                     }
                     reader.Close();
