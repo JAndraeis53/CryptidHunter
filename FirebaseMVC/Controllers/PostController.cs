@@ -72,42 +72,52 @@ namespace CryptidHunter.Controllers
         // GET: PostController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Post post = _postRepo.GetPostById(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+                return View(post);
         }
 
         // POST: PostController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Post post)
         {
             try
             {
+                _postRepo.UpdatePost(post);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(post);
             }
         }
 
         // GET: PostController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Post post = _postRepo.GetPostById(id);
+            
+            return View(post);
         }
 
         // POST: PostController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Post post)
         {
             try
             {
+                _postRepo.DeletePost(id);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(post);
             }
         }
     }
