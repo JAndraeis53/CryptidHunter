@@ -40,3 +40,9 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>
+<div class="row">
+    <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="Comments">
+
+        <i class="fas fa-comment"></i>
+    </a>
+</div>
