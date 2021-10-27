@@ -20,18 +20,26 @@ namespace CryptidHunter.Controllers
         {
             _postRepo = postRepository;
             _userProfileRepo = userProfileRepository;
+            _commentRepo = commentRepository;
         }
 
         // GET: CommentController
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View();
+            var comment = _commentRepo.GetCommentByPostId(id);
+            
+            return View(comment);
         }
 
         // GET: CommentController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Comment comment = _commentRepo.GetCommentById(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return View(comment);
         }
 
         // GET: CommentController/Create
@@ -43,57 +51,81 @@ namespace CryptidHunter.Controllers
         // POST: CommentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Comment comment)
         {
+            comment.UserProfileId = GetCurrentUserProfileId();
+            comment.PostId = GetCurrentPostId();
             try
             {
+                _commentRepo.AddComment(comment);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(comment);
             }
+        }
+
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
+        }
+
+        private int GetCurrentPostId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
 
         // GET: CommentController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Comment comment = _commentRepo.GetCommentById(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return View(comment);
         }
 
         // POST: CommentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Comment comment)
         {
             try
             {
+                _commentRepo.UpdateComment(comment);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(comment);
             }
         }
 
         // GET: CommentController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Comment comment = _commentRepo.GetCommentById(id);
+
+            return View(comment);
         }
 
         // POST: CommentController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Comment comment)
         {
             try
             {
+                _commentRepo.DeleteComment(id);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(comment);
             }
         }
     }

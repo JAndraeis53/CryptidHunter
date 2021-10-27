@@ -149,7 +149,7 @@ namespace CryptidHunter.Repositories
                 {
                     cmd.CommandText = @"
                                         INSERT INTO
-                                        COMMENNT (Message, PostId, UserProfileId) 
+                                        COMMENT (Message, PostId, UserProfileId) 
                                         OUTPUT INSERTED.ID
                                         VALUES(@Message, @PostId, @UserProfileId);
                                         ";
