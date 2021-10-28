@@ -58,7 +58,7 @@ namespace CryptidHunter.Controllers
             try
             {
                 _commentRepo.AddComment(comment);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = comment.PostId });
             }
             catch (Exception ex)
             {
@@ -72,16 +72,12 @@ namespace CryptidHunter.Controllers
             return int.Parse(id);
         }
 
-        //private int GetCurrentPostId()
-        //{
-        //    string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    return int.Parse(id);
-        //}
-
-        // GET: CommentController/Edit/5
+       
         public ActionResult Edit(int id)
         {
+
             Comment comment = _commentRepo.GetCommentById(id);
+
             if (comment == null)
             {
                 return NotFound();
@@ -97,7 +93,7 @@ namespace CryptidHunter.Controllers
             try
             {
                 _commentRepo.UpdateComment(comment);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = comment.PostId });
             }
             catch (Exception ex)
             {
@@ -121,7 +117,7 @@ namespace CryptidHunter.Controllers
             try
             {
                 _commentRepo.DeleteComment(id);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = comment.PostId });
             }
             catch (Exception ex)
             {
