@@ -51,10 +51,10 @@ namespace CryptidHunter.Controllers
         // POST: CommentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Comment comment)
+        public ActionResult Create(int id, Comment comment)
         {
             comment.UserProfileId = GetCurrentUserProfileId();
-            comment.PostId = GetCurrentPostId();
+            comment.PostId = id;
             try
             {
                 _commentRepo.AddComment(comment);
@@ -72,11 +72,11 @@ namespace CryptidHunter.Controllers
             return int.Parse(id);
         }
 
-        private int GetCurrentPostId()
-        {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return int.Parse(id);
-        }
+        //private int GetCurrentPostId()
+        //{
+        //    string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    return int.Parse(id);
+        //}
 
         // GET: CommentController/Edit/5
         public ActionResult Edit(int id)

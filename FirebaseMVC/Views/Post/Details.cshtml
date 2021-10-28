@@ -41,8 +41,10 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <div class="row">
-    <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="Comments">
+    <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id" >
 
-        <i class="fas fa-pencil-alt"></i>
+        <button class="btn btn-outline-primary mx-1" title="Comments">
+                <i class="fas fa-pencil-alt" >Leave a comment</i>
+        </button>
     </a>
 </div>
