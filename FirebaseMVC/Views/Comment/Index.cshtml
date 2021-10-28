@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CryptidHunter.Models.Comment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Popular Comments</h1>
+
+<p>
+    <a asp-route-id="@(ViewContext.RouteData.Values["id"])" asp-action="Create">Create a new comment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.UserProfileId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostId)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.UserProfileId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostId)
+            </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
