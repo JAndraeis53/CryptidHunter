@@ -11,7 +11,7 @@ This application if open for use to anyone with a thirst for the truth, the curi
 
 The basic structure of this application will revolve around a form. Users will fill in a form for their sighting of a creature, publish their post, comment on other users' post, edit personal post, and delete personal post.
 
-This will be an MVC Webapp using C# and Net Core 3.5, with SQL for the server interactions. I will be using Firebase from Google for authentication. Any user can log in with a email and a password or with email: a@a.com and password: 123456
+This will be an MVC Webapp using C# and Net Core 3.5, with SQL for the server interactions. I am using Github for version control and project tickets. I will be using Firebase from Google for authentication. Any user can log in with a email and a password or with email: a@a.com and password: 123456
 
 
 For my ERD, please refer here:
