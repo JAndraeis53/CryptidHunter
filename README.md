@@ -14,3 +14,9 @@ The basic structure of this application will revolve around a form. Users will f
 This will be an MVC Webapp using C# and Net Core 3.5, with SQL for the server interactions. I will be using Firebase from Google for authentication. Any user can log in with a email and a password.
 
 
+For my ERD, please refer here:
+https://dbdiagram.io/d/60d0dae00c1ff875fcd5d22b
+
+For my WireFrame plan, please refer here:
+https://miro.com/app/board/o9J_lqa4iW4=/
+
