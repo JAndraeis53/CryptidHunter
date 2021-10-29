@@ -113,11 +113,16 @@ namespace CryptidHunter.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Comment comment)
+
         {
+            var getcomment = _commentRepo.GetCommentById(id);
+
             try
             {
                 _commentRepo.DeleteComment(id);
-                return RedirectToAction("Index", new { id = comment.PostId });
+                return RedirectToAction("Index", new { id = getcomment.PostId });
+
+
             }
             catch (Exception ex)
             {
