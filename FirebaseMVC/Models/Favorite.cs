@@ -5,13 +5,10 @@ using System.Threading.Tasks;
 
 namespace CryptidHunter.Models
 {
-    public class Post
+    public class Favorite
     {
         public int Id { get; set; }
         public int UserProfileId { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
-        public UserProfile UserProfile { get; set; }
-        public Favorite Favorite { get; set; }
+        public int PostId { get; set; }
     }
 }
