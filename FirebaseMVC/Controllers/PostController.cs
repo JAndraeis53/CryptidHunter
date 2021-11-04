@@ -14,11 +14,13 @@ namespace CryptidHunter.Controllers
     {
         private readonly IPostRepository _postRepo;
         private readonly IUserProfileRepository _userProfileRepo;
+        private readonly IFavoriteRepository _favoriteRepo;
 
-        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
+        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository, IFavoriteRepository favoriteRepository)
         {
             _postRepo = postRepository;
             _userProfileRepo = userProfileRepository;
+            _favoriteRepo = favoriteRepository;
         }
 
         // GET: PostController
@@ -32,7 +34,7 @@ namespace CryptidHunter.Controllers
         // GET: PostController/Details/5
         public ActionResult Details(int id)
         {
-            Post post = _postRepo.GetPostById(id);
+            Post post = _postRepo.GetPostById(id, GetCurrentUserProfileId());
             if (post == null)
             {
                 return NotFound();
@@ -72,12 +74,12 @@ namespace CryptidHunter.Controllers
         // GET: PostController/Edit/5
         public ActionResult Edit(int id)
         {
-            Post post = _postRepo.GetPostById(id);
+            Post post = _postRepo.GetPostById(id, GetCurrentUserProfileId());
             if (post == null)
             {
                 return NotFound();
             }
-                return View(post);
+            return View(post);
         }
 
         // POST: PostController/Edit/5
@@ -100,8 +102,8 @@ namespace CryptidHunter.Controllers
         // GET: PostController/Delete/5
         public ActionResult Delete(int id)
         {
-            Post post = _postRepo.GetPostById(id);
-            
+            Post post = _postRepo.GetPostById(id, GetCurrentUserProfileId());
+
             return View(post);
         }
 
@@ -120,5 +122,44 @@ namespace CryptidHunter.Controllers
                 return View(post);
             }
         }
+
+        public ActionResult Favorite(int id)
+        {
+            var favorite = new Favorite
+            {
+                UserProfileId = GetCurrentUserProfileId(),
+                PostId = id
+            };
+
+            _favoriteRepo.AddFavorite(favorite);
+
+            return RedirectToAction("Details", new { id });
+
+        }
+
+        
+        public ActionResult UnFavorite(int id, int postId)
+        {
+
+            try
+            {
+                _favoriteRepo.DeleteFavorite(id);
+                return RedirectToAction("Details", new { id = postId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Details", new { id = postId });
+
+            }
+        }
+
+        //currenlty using asp route id for the favorite not the post. Need to use the post Id instead
+
+        //public ActionResult Delete(int id)
+        //{
+        //    Favorite favorite = _postRepo.GetPostById(id, GetCurrentUserProfileId());
+
+        //    return View(post);
+        //}
     }
 }

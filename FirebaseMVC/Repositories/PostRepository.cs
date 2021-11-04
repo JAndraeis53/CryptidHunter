@@ -64,7 +64,7 @@ namespace CryptidHunter.Repositories
                 }
             }
         }
-        public Post GetPostById(int id)
+        public Post GetPostById(int id, int upid)
         {
             using (SqlConnection conn = Connection)
             {
@@ -72,11 +72,15 @@ namespace CryptidHunter.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Id, title, body, UserProfileId
+                                    SELECT Post.Id, Post.title, Post.body, Post.UserProfileId, f.Id as FavoriteId
                                     FROM Post
-                                    WHERE Id = @Id";
+                                    LEFT JOIN Favorite f ON f.PostId = Post.Id
+                                    WHERE Post.Id = @Id 
+                                    AND (f.UserProfileId = @UserProfileId
+                                    OR f.UserProfileId IS NULL)";
 
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@UserProfileId", upid);
 
                     Post post = null;
 
@@ -90,6 +94,14 @@ namespace CryptidHunter.Repositories
                             Body = reader.GetString(reader.GetOrdinal("body")),
                             UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                         };
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("FavoriteId")))
+                        {
+                            post.Favorite = new Favorite
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("FavoriteId")),
+                            };
+                        }
                     }
                     reader.Close();
 

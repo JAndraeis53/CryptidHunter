@@ -41,10 +41,28 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <div class="row">
-    <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id" >
+    <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id">
 
         <button class="btn btn-outline-primary mx-1" title="Comments">
-                <i class="fas fa-pencil-alt" >Leave a comment</i>
+            <i class="fas fa-pencil-alt">Leave a comment</i>
         </button>
     </a>
+
+    @if (Model.Favorite == null)
+    {
+        <a asp-action="Favorite" asp-route-id="@Model.Id">
+            <button class="btn btn-outline-primary mx-1" title="Favorties">
+                <i> Favorite This </i>
+            </button>
+        </a>
+    }
+    else
+    {
+        <a asp-action="UnFavorite" asp-route-id="@Model.Favorite.Id" asp-route-postId="@Model.Id">
+            <button class="btn btn-outline-primary mx-1" title="UnFavorties">
+                <i> UnFavorite This </i>
+            </button>
+        </a>
+    }
+
 </div>

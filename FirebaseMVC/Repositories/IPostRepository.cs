@@ -7,7 +7,7 @@ namespace CryptidHunter.Repositories
     public interface IPostRepository
     {
         List<Post> GetAllPost();
-        Post GetPostById(int id);
+        Post GetPostById(int id, int upid);
         void AddPost(Post post);
         void UpdatePost(Post post);
         void DeletePost(int id);
