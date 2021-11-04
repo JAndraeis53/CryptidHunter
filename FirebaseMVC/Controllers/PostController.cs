@@ -153,13 +153,5 @@ namespace CryptidHunter.Controllers
             }
         }
 
-        //currenlty using asp route id for the favorite not the post. Need to use the post Id instead
-
-        //public ActionResult Delete(int id)
-        //{
-        //    Favorite favorite = _postRepo.GetPostById(id, GetCurrentUserProfileId());
-
-        //    return View(post);
-        //}
     }
 }
