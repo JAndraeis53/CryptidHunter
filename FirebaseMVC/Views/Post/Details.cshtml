@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>A Closer Look</h1>
+<h1 class="container bg-warning xtext-white p-4">A Closer Look</h1>
 
 <div>
     <h4>You are viewing the full report</h4>
@@ -43,7 +43,7 @@
 <div class="row">
     <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id">
 
-        <button class="btn btn-outline-primary mx-1" title="Comments">
+        <button class="btn btn-primary mx-1" title="Comments">
             <i class="fas fa-pencil-alt">Leave a comment</i>
         </button>
     </a>
@@ -51,15 +51,15 @@
     @if (Model.Favorite == null)
     {
         <a asp-action="Favorite" asp-route-id="@Model.Id">
-            <button class="btn btn-outline-primary mx-1" title="Favorties">
-                <i> Favorite This </i>
+            <button class="btn btn-outline-success mx-1" title="Favorties">
+                <i > Favorite This </i>
             </button>
         </a>
     }
     else
     {
         <a asp-action="UnFavorite" asp-route-id="@Model.Favorite.Id" asp-route-postId="@Model.Id">
-            <button class="btn btn-outline-primary mx-1" title="UnFavorties">
+            <button class="btn btn-outline-dark mx-1" title="UnFavorties">
                 <i> UnFavorite This </i>
             </button>
         </a>
